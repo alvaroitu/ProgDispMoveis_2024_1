@@ -1,12 +1,11 @@
-package com.alvaroitu.aula_6_http;
+package com.alvaroitu.aula_7_apichucknorris;
 
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,29 +19,66 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText textoDigitado;
+
+    LinearLayout linearLayout;
     Button botaoRecuperar;
     TextView textoResultado;
-    String paisBuscado;
+    ListView listCategories;
+    String categoriaSelecionada;
+    String[] categories = {"animal",
+            "career",
+            "celebrity",
+            "dev",
+            "explicit",
+            "fashion",
+            "food",
+            "history",
+            "money",
+            "movie",
+            "music",
+            "political",
+            "religion",
+            "science",
+            "sport",
+            "travel"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textoDigitado = findViewById(R.id.textoDigitado);
         botaoRecuperar = findViewById(R.id.botaoRecuperar);
         textoResultado = findViewById(R.id.textoResultado);
+        listCategories = findViewById(R.id.listCategories);
+        linearLayout = findViewById(R.id.linearLayout);
+
+        linearLayout.setBackgroundColor(getResources().getColor(R.color.black));
+
+        ArrayAdapter<String> adaptador = new ArrayAdapter<>(
+                getApplicationContext(),
+                android.R.layout.simple_list_item_1,
+                android.R.id.text1,
+                categories
+        );
+
+        listCategories.setAdapter(adaptador);
+
+        listCategories.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                categoriaSelecionada = listCategories.getItemAtPosition(i).toString();
+                Toast.makeText(MainActivity.this, categoriaSelecionada, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         botaoRecuperar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 MyTask task = new MyTask();
-                String urlBlockChain = "https://blockchain.info/ticker";
-                String cep = textoDigitado.getText().toString();
-                String urlCep = "https://viacep.com.br/ws/" + cep + "/json/";
-                task.execute(urlBlockChain);
+                String chuckNorris = "https://api.chucknorris.io/jokes/random?category=" + categoriaSelecionada;
+                Toast.makeText(MainActivity.this, chuckNorris, Toast.LENGTH_LONG).show();
+                task.execute(chuckNorris);
             }
         });
     }
@@ -90,31 +126,12 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String resultado) {
             super.onPostExecute(resultado);
 
-            String cep = null;
-            String logradouro = null;
-            String bairro = null;
-            String localidade = null;
-            String uf = null;
-            String pais = null;
-            String buy = null;
-            String symbol = null;
-            String info = null;
-            String blockchain = null;
+            JSONArray categories = null;
+            String value = null;
 
             try {
                 JSONObject jsonObject = new JSONObject(resultado);
-//                cep = jsonObject.getString("cep");
-//                uf = jsonObject.getString("uf");
-//                logradouro = jsonObject.getString("logradouro");
-//                bairro = jsonObject.getString("bairro");
-//                localidade = jsonObject.getString("localidade");
-
-//                pais = jsonObject.getString("BRL");
-//                JSONObject jsonObject1 = new JSONObject(pais);
-//                buy = jsonObject1.getString("buy");
-//                symbol = jsonObject1.getString("symbol");
-//                JSONObject objectPais = jsonObject.getJSONObject("BRL");
-//                info = objectPais.getString("buy");
+                categories = jsonObject.getJSONArray("categories");
 
 
 
@@ -122,10 +139,13 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            textoResultado.setText(resultado);
+            try {
+                textoResultado.setText("Categoria: " + categories.getString(0) +
+                        "\n Conselho: " + value);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-//            textoResultado.setText(logradouro + "\n" + bairro + "\n" +
-//                    localidade + "\n" + uf  + "\n" + cep );
 
         }
     }
