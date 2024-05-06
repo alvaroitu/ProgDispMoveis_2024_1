@@ -1,6 +1,7 @@
 package com.alvaroitu.aula_7_apichucknorris;
 
 import android.os.AsyncTask;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         linearLayout = findViewById(R.id.linearLayout);
 
         linearLayout.setBackgroundColor(getResources().getColor(R.color.black));
+        textoResultado.setMovementMethod(new ScrollingMovementMethod());
 
         ArrayAdapter<String> adaptador = new ArrayAdapter<>(
                 getApplicationContext(),
@@ -132,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 JSONObject jsonObject = new JSONObject(resultado);
                 categories = jsonObject.getJSONArray("categories");
+                value = jsonObject.getString("value");
 
 
 

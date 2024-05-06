@@ -13,11 +13,12 @@
     <Button
             android:text="Buscar dados"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/botaoRecuperar" android:layout_margin="10dp"
-            android:layout_marginTop="5dp"/>
+            android:layout_height="wrap_content" android:id="@+id/botaoRecuperar"
+    />
     <TextView
             android:text="Resultado"
+            android:scrollbars="vertical"
             android:textColor="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="199dp" android:id="@+id/textoResultado" android:gravity="center"/>
+            android:layout_height="26dp" android:id="@+id/textoResultado" android:gravity="center"/>
 </LinearLayout>
