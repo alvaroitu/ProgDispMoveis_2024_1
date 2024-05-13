@@ -14,7 +14,7 @@
     <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" app:srcCompat="@drawable/play" android:id="@+id/imageButtonPlay"
-            android:background="#00D62626" app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/play" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/imageButtonPause"
             app:layout_constraintHorizontal_chainStyle="spread" android:layout_marginTop="20dp"
             app:layout_constraintTop_toBottomOf="@+id/seekVolume" android:onClick="playMusic"
